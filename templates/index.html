@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Energy Advisor</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Welcome to Smart Energy Advisor 🌱⚡</h1>
+
+    <div id="menu">
+        <button onclick="showFeature('labelChecker')">Energy Label Checker</button>
+        <button onclick="showFeature('carbonDashboard')">Carbon Footprint</button>
+        <button onclick="showFeature('energyPlan')">Energy-saving Plan</button>
+        <button onclick="showFeature('energyTrends')">Energy Market Trends</button>
+    </div>
+
+    <div id="featureContent">
+        <p>Select a feature to start!</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
