@@ -15,6 +15,26 @@ h1 {
   border-radius: 0 0 10px 10px;
 }
 
+/* Header for School and Project Name */
+#header {
+  background-color: #2E8B57;
+  color: white;
+  padding: 10px;
+  border-radius: 0 0 10px 10px;
+  margin-bottom: 10px;
+}
+
+#header h2 {
+  margin: 5px 0;
+  font-size: 1.3em;
+}
+
+#header h3 {
+  margin: 2px 0;
+  font-size: 1.1em;
+  font-weight: normal;
+}
+
 #menu {
   margin: 20px;
 }

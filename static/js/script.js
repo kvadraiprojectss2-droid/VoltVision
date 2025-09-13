@@ -9,7 +9,9 @@ function showFeature(feature) {
             <p>Enter appliance star rating (1-5):</p>
             <input type="number" id="starInput" min="1" max="5">
             <button onclick="checkLabel()">Check</button>
+            <button onclick="getAIPrediction()">Get AI Prediction</button>
             <p id="result"></p>
+            <div id="aiResult"></div>
         `;
     }
 
@@ -46,7 +48,9 @@ function showFeature(feature) {
     else if(feature === 'energyTrends') {
         content.innerHTML = `
             <h2>Energy Market Trends</h2>
-            <p>📈 AI will soon show trends here based on live data!</p>
+            <p>📈 Next 6-hour energy forecast:</p>
+            <canvas id="trendChart" width="400" height="200"></canvas>
+            <button onclick="fetchTrends()">Refresh Trends</button>
         `;
     }
 }
@@ -88,7 +92,6 @@ function calculateDashboard() {
     };
 
     let totalCarbon = Object.values(emissions).reduce((a,b) => a + b, 0);
-    lastCarbonValue = totalCarbon;
 
     // Device-wise table
     let breakdownHTML = `<strong>Your daily carbon footprint is ${totalCarbon.toFixed(2)} kg CO₂.</strong><br><br>`;
@@ -103,18 +106,12 @@ function calculateDashboard() {
     // Draw chart
     drawChart(emissions);
 
-    // ==== AI Prediction (Clear & Visible) ====
-    let weeklyKWh = (totalCarbon * 0.7).toFixed(2); // rough conversion
-    let aiMessage = `
-        ✅ <strong>AI Prediction:</strong> Your estimated energy usage next week is <strong>${weeklyKWh} kWh</strong>.<br>
-        📊 This helps reduce your carbon footprint by planning usage in advance!
-    `;
-
-    // Monthly insight
+    // AI Prediction
     let monthlyCarbon = totalCarbon * 30;
-    if(monthlyCarbon>300) aiMessage += "<br>🚨 High usage! Reduce AC or lights.";
-    else if(monthlyCarbon>150) aiMessage += "<br>⚠️ Moderate usage. Consider energy-saving tips.";
-    else aiMessage += "<br>✅ Excellent! Your usage is eco-friendly.";
+    let aiMessage = `📊 Monthly projected CO₂: ${monthlyCarbon.toFixed(2)} kg. `;
+    if(monthlyCarbon>300) aiMessage += "🚨 High usage! Reduce AC or lights.";
+    else if(monthlyCarbon>150) aiMessage += "⚠️ Moderate usage. Consider energy-saving tips.";
+    else aiMessage += "✅ Excellent! Your usage is eco-friendly.";
 
     document.getElementById('aiResult').innerHTML = `<h3>AI Analysis</h3><p>${aiMessage}</p>`;
 }
@@ -136,4 +133,41 @@ function drawChart(emissions) {
             scales: { y: { beginAtZero: true } }
         }
     });
+}
+
+// ===== Free Energy API Forecast =====
+function fetchTrends() {
+    fetch('/energy_trends')
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.hours,
+                    datasets: [{
+                        label: 'Predicted Grid Load (MW)',
+                        data: data.load,
+                        borderColor: '#4CAF50',
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        });
+}
+
+// ===== Simulated AI Prediction =====
+function getAIPrediction() {
+    const starRating = parseInt(document.getElementById('starInput').value);
+    let prediction = "";
+
+    if(starRating >= 4) prediction = "✅ AI Prediction: Energy-efficient appliance. Good choice!";
+    else if(starRating >= 2) prediction = "⚠️ AI Prediction: Moderate efficiency. Consider upgrading soon!";
+    else prediction = "🚨 AI Prediction: Very inefficient. Replace ASAP!";
+
+    document.getElementById('aiResult').innerHTML = prediction;
 }

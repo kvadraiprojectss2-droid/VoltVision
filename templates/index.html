@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Energy Advisor</title>
+    <title>VoltVision - Smart Energy Advisor</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+
+    <!-- School and Project Name Header -->
+    <div id="header">
+        <h2>PM SHRI KENDRIYA VIDYALAYA ADOOR - SHIFT II</h2>
+        <h3>Project: VoltVision</h3>
+    </div>
+
+    <!-- Main Title -->
     <h1>Welcome to Smart Energy Advisor 🌱⚡</h1>
 
+    <!-- Navigation Buttons -->
     <div id="menu">
         <button onclick="showFeature('labelChecker')">Energy Label Checker</button>
         <button onclick="showFeature('carbonDashboard')">Carbon Footprint</button>
@@ -17,6 +26,7 @@
         <button onclick="showFeature('energyTrends')">Energy Market Trends</button>
     </div>
 
+    <!-- Feature Content -->
     <div id="featureContent">
         <p>Select a feature to start!</p>
     </div>
