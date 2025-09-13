@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: your-app-name
-    env: python
+    name: energy-predictor
+    env: docker
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app

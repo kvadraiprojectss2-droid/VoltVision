@@ -1,0 +1,17 @@
+# Use Python 3.11 base image
+FROM python:3.11-slim
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy requirements.txt first (so Docker can cache dependencies)
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the app code
+COPY . .
+
+# Start the app using Gunicorn
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:10000"]
